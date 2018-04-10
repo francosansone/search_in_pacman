@@ -101,15 +101,25 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     st = Stack()
-    ret search(problem, st)
+    return search(problem, st)
 
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
-
+    q = Queue()
+    return search(problem,q)
+    
+    
 def uniformCostSearch(problem):
-    "Search the node of least total cost first."
+    "Search the node of least total cost"
+    pq = PriorityQueueWithFunction(lambda x : problem.getCostOfActions(x[1]))
+#    pq = PriorityQueueWithFunction(lambda x: print(type(x)); return x)
+    return search(problem, pq)
+    
+
+    
+    
 
 def nullHeuristic(state, problem=None):
     """
