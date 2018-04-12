@@ -12,6 +12,7 @@ by Pacman agents (in searchAgents.py).
 """
 
 from util import *
+import searchAgents
 
 class SearchProblem:
     """
@@ -72,14 +73,14 @@ def search(problem, fringe):
     initial_actions = []
     initial_candidate = (initial_state, initial_actions)
     fringe.push(initial_candidate)
-    closed_set = set()
+    closed_set = []
     while not fringe.isEmpty():
         candidate = fringe.pop()
         state, actions = candidate
         if problem.isGoalState(state):
             return actions
         if state not in closed_set:
-            closed_set.add(state)
+            closed_set.append(state)
             candidate_successors = problem.getSuccessors(state)
             candidate_successors = filter(lambda x: x[0] not in closed_set, candidate_successors)
             candidate_successors = map(lambda x: (x[0], actions + [x[1]]), candidate_successors)
@@ -107,19 +108,18 @@ def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
-    q = Queue()
+    q = PriorityQueueWithFunction(len)
     return search(problem,q)
-    
-    
+
+
 def uniformCostSearch(problem):
     "Search the node of least total cost"
     pq = PriorityQueueWithFunction(lambda x : problem.getCostOfActions(x[1]))
-#    pq = PriorityQueueWithFunction(lambda x: print(type(x)); return x)
     return search(problem, pq)
-    
 
-    
-    
+
+
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -130,6 +130,8 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
+    p = PriorityQueueWithFunction(lambda x: problem.getCostOfActions(x[1]) + heuristic(x[0],problem))
+    return search(problem,p)
 
 # Abbreviations
 bfs = breadthFirstSearch
