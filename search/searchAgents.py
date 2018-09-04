@@ -366,11 +366,16 @@ def cornersHeuristic(state, problem):
 
     mCorners = state[1]
     h = 0
-    x,y = state[0]
-    for mx,my in corners:
-        h = abs(x - mx) + abs(y + my)
-    print h
+    for i,corner in enumerate(state[1]):
+        if not corner:
+            h += util.manhattanDistance(state[0], corners[i])
     return h
+
+    # x,y = state[0]
+    # for mx,my in corners:
+        # h = abs(x - mx) + abs(y + my)
+    # print h
+    # return h
     #return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
